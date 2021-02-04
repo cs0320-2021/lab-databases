@@ -38,7 +38,7 @@ public final class Main {
    *
    * @param args An array of command line arguments
    */
-  public static void main(String[] args) {
+  public static void main(String[] args) throws SQLException, ClassNotFoundException {
     new Main(args).run();
   }
 
@@ -48,7 +48,7 @@ public final class Main {
     this.args = args;
   }
 
-  private void run() {
+  private void run() throws SQLException, ClassNotFoundException {
 
     OptionParser parser = new OptionParser();
     parser.accepts("gui");
@@ -105,21 +105,9 @@ public final class Main {
             for (String file : fileNames) {
               db.readCorpus(file);
             }
-
-            if (options.has("delete")) {
-              String delete = options.valueOf(deleteSpec);
-              List<String> toDelete = new ArrayList<String>(Arrays.asList(delete.split(",")));
-              for (String file : toDelete) {
-                db.deleteCorpus(file);
-              }
-
-            }
-
-
           } else {
             db.readAll();
           }
-
           ac = new Autocorrector(db, prefix, whitespace, led);
 
           if (options.has("stats")) {
